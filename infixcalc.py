@@ -24,6 +24,8 @@ operação: sum
 n1: 5
 n2: 4
 9
+
+os resultados serão salvos em infixcalc.log
 """
 
 __version__ = '0.1.0'
@@ -31,6 +33,9 @@ __author__ = 'Otávio'
 __license__ = 'unlicense'
 
 import sys
+import os
+from datetime import datetime
+
 
 arguments = sys.argv[1:]
 
@@ -80,6 +85,15 @@ elif operation == 'mul':
     result = n1 * n2 
 elif operation == 'sub':
     result = n1 - n2 
+
+path = os.curdir
+filepath = os.path.join(path, 'infixcalc.log')
+timestamp = datetime.now().isoformat()
+user = os.getenv("USER", 'anonymous')
+
+
+with open(filepath, 'a') as file_:
+    file_.write(f'{user} - {timestamp} - {operation}, {n1}, {n2} = {result}\n')
 
 print(f'O resultado é {result}')
 
