@@ -1,27 +1,28 @@
+import os
+import sys
 
-email_tmpl = '''
+arguments = sys.argv[1:]
+if not arguments:
+    print('informe o nome do arquivo de emails')
+    sys.exit(1)
+    
+filename = arguments[0]
+templatename = arguments[1]
 
-Olá, %(nome)s
- 
-Tem interesse em comprar %(produto)s
- 
-Este produto é otimo para resolver
-%(texto)s
- 
-CLique agora em %(link)s
- 
-Apenas %(quantidade)d disponiveis!
- 
-Preço promocional %(preco).2f
-'''
+path = os.curdir
+filepath = os.path.join(path, filename)
+templatepath = os.path.join(path, templatename)
 
-clientes = ['Maria', 'João', 'Bruno']
 
-for cliente in clientes:
+for line in open(filepath):
+    name, email = line.split(',')
+
+    # TODO: substituir por envio de email
+    print(f'Enviando email para {email}')
     print(
-        email_tmpl 
+        open(templatepath).read() 
         % {
-            'nome': cliente, 
+            'nome': name, 
             'produto': 'Caneta',
             'texto': 'Escreve muito bem',
             'link': 'https://canetaslegais.com',
@@ -29,3 +30,4 @@ for cliente in clientes:
             'preco': 50.5
         }
         )
+    print("-" * 50)
