@@ -32,33 +32,69 @@ __license__ = 'unlicense'
 
 import sys
 
-valid_operations = ['sum', 'div', 'sub', 'mul']
 arguments = sys.argv[1:]
 
-if len(arguments) != 3:
-    arguments.append('Insira a operação: ')
-    arguments.append('Insira o primeiro número: ')
-    arguments.append('Insira o segundo número: ')
 
-elif arguments[0] not in valid_operations:
-    print(f'Invalid operation {sys.argv[1]} insert(sum, mul, div, sub)')
-    sys.exit(0)
-else:
-    operation, *nums = arguments
+# TODO usar exceptions
+if not arguments:
+    operation = input('operação: ')
+    n1 = input('n1: ')
+    n2 = input('n2: ')
+    arguments = [operation, n1, n2]
 
-nums[0] = float(nums[0])
-nums[1] = float(nums[1])
+    
+elif len(arguments) != 3:
+    print('Número de argumentos inválidos')
+    print('ex: sum 5 5')
+    sys.exit(1)
 
-op = 0
+operation, *nums = arguments
 
+valid_operations = ('sum', 'sub', 'div', 'mul')
+if operation not in valid_operations:
+    print('Operação invalida')
+    print(valid_operations)
+    sys.exit(1)
+
+validated_nums = []
+for num in nums:
+    #  TODO: Repetição while + exceptions
+    if not num.replace('.', '').isdigit():
+        print(f'Número inválido {num}')
+        sys.exit(1)
+    if '.' in num:
+        num = float(num)
+    else:
+        num = int(num)
+    validated_nums.append(num)
+
+n1, n2 = validated_nums
+
+
+# TODO: USAR DICT DE FUNCÕES
 if operation == 'sum':
-    op = int(nums[0]) + int(nums[1])
+    result = n1 + n2 
 elif operation == 'div':
-    op = int(nums[0]) + int(nums[1])
-elif operation == 'sub':
-    op = int(nums[0]) + int(nums[1])
+    result = n1 / n2 
 elif operation == 'mul':
-    op = int(nums[0]) + int(nums[1])
+    result = n1 * n2 
+elif operation == 'sub':
+    result = n1 - n2 
 
-print(op)
+print(f'O resultado é {result}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
