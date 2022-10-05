@@ -2,29 +2,31 @@
 
 import os
 import sys
+import time
+import logging
+
+log = logging.Logger('errors')
 
 # EAFP - Easy to Asl forgiveness than permission
 # (É mais facil pedir perdão do que permissão)
 
-try:
-    names = open('names.txt').readlines()
-    1 / 0
-except:
-    print('[Error] File names.txt not Found.')
-    sys.exit(1)
-    # TODO: USAR RETRY
+def try_to_open_a_file(filepath, retry=1) -> list:
+    """ Tries to open file, if error, retries n times"""
+    for attempt in range(1, retry + 1):
+        try:
+            return open(filepath).readlines()
+        except FileNotFoundError as e:
+            log.error('ERRO: %s', e)
+            time.sleep(2)
+        else:
+            print('Sucesso')
+        finally:
+            print('Sempre execute isso!')
+    return []
 
-else:
-    print('Sucesso')
-finally:
-    print('Sempre execute isso!')
+for line in try_to_open_a_file('names.txt', retry=5):
+    print(line)
 
-
-try:
-    print(names[2])
-except:
-    print('[Error] Missing name in the list')
-    sys.exit(1)
 
 
 
